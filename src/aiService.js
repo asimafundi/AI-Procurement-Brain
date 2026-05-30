@@ -1,9 +1,8 @@
 import OpenAI from "openai";
 
-// إنشاء عميل Deep Seek
+// إنشاء عميل OpenAI
 const openai = new OpenAI({
-  apiKey: import.meta.env.VITE_DEEPSEEK_API_KEY,
-  baseURL: "https://api.deepseek.com/v1",
+  apiKey: import.meta.env.VITE_OPENAI_API_KEY,
   dangerouslyAllowBrowser: true,
 });
 
@@ -41,7 +40,7 @@ export async function analyzeProjectWithAI(formData) {
 `;
 
     const response = await openai.chat.completions.create({
-      model: "deepseek-chat",
+      model: "gpt-4o-mini",
       messages: [
         {
           role: "user",
