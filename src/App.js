@@ -1,5 +1,8 @@
-import SmartIntakeForm from './SmartIntakeForm';
-
 export default function App() {
-  return <SmartIntakeForm />;
+  return (
+    <div>
+      <h1>AI Procurement Brain</h1>
+      {/* باقي المحتوى */}
+    </div>
+  );
 }

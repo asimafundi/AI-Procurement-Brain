@@ -130,84 +130,73 @@ export default function SmartIntakeForm() {
     return uploadedFiles;
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    
-    if (!validateStep()) {
-      setError('يرجى ملء جميع الحقول المطلوبة');
-      return;
-    }
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  
+  if (!validateStep()) {
+    setError('يرجى ملء جميع الحقول المطلوبة');
+    return;
+  }
 
+  setLoading(true);
+  setError(null);
+
+  try {
+    // تحضير البيانات
+    const dataToSend = {
+      company_name: formData.companyName,
+      contact_name: formData.contactName,
+      phone: formData.phone,
+      email: formData.email,
+      city: formData.city,
+      business_type: formData.businessType,
+      project_types: formData.projectTypes.join(', '),
+      project_status: formData.projectStatus,
+      project_goal: formData.projectGoal,
+      deadline: formData.deadline,
+      area: parseInt(formData.area),
+      floors: formData.floors,
+      building_status: formData.buildingStatus,
+      ceiling_type: formData.ceilingType,
+      ceiling_height: formData.ceilingHeight,
+      drilling_restrictions: formData.drillingRestrictions,
+      server_room: formData.serverRoom,
+      employees: parseInt(formData.employees),
+      security_level: parseInt(formData.securityLevel),
+      google_maps_link: formData.googleMapsLink,
+      budget: formData.budget,
+      site_survey_required: needsSiteSurvey(),
+      status: 'pending'
+    };
+
+    // 1️⃣ حفظ البيانات في Supabase
+    const { data, error: insertError } = await supabase
+      .from('intakes')
+      .insert([dataToSend])
+      .select();
+
+    if (insertError) throw insertError;
+
+    // 2️⃣ تحليل المشروع بـ AI
     setLoading(true);
-    setError(null);
+    const aiAnalysis = await analyzeProjectWithAI(dataToSend);
+    
+    // 3️⃣ حفظ التحليل في Supabase
+    await supabase
+      .from('intakes')
+      .update({ ai_analysis: aiAnalysis })
+      .eq('id', data[0].id);
 
-    try {
-      // تحميل الملفات أولاً
-      let uploadedFiles = {};
-      if (formData.planFile || formData.walkthroughVideo) {
-        uploadedFiles = await uploadFiles();
-      }
+    setLoading(false);
+    setSubmitted(true);
+    setFormData({...formData, aiReport: aiAnalysis}); // حفظ محلي للعرض
 
-      // تحضير البيانات
-      const dataToSend = {
-        company_name: formData.companyName,
-        contact_name: formData.contactName,
-        phone: formData.phone,
-        email: formData.email,
-        city: formData.city,
-        business_type: formData.businessType,
-        project_types: formData.projectTypes.join(', '),
-        project_status: formData.projectStatus,
-        project_goal: formData.projectGoal,
-        deadline: formData.deadline,
-        area: parseInt(formData.area),
-        floors: formData.floors,
-        building_status: formData.buildingStatus,
-        ceiling_type: formData.ceilingType,
-        ceiling_height: formData.ceilingHeight,
-        drilling_restrictions: formData.drillingRestrictions,
-        server_room: formData.serverRoom,
-        employees: parseInt(formData.employees),
-        security_level: parseInt(formData.securityLevel),
-        google_maps_link: formData.googleMapsLink,
-        budget: formData.budget,
-        site_survey_required: needsSiteSurvey(),
-        status: 'pending',
-        notes: JSON.stringify({
-          existingInfra: formData.existingInfra,
-          cameraDetails: formData.cameraDetails,
-          wifiDetails: formData.wifiDetails,
-          accessDetails: formData.accessDetails,
-          uploadedFiles: uploadedFiles
-        })
-      };
-
-      // إرسال البيانات إلى Supabase
-const { error: insertError } = await supabase
-    .from('intakes')
-    .insert([dataToSend])
-    .select();
-
-      if (insertError) {
-        throw new Error(insertError.message);
-      }
-
-      // محاولة إرسال إشعار (اختياري)
-      try {
-        await sendNotifications(dataToSend);
-      } catch (notifyError) {
-        console.warn('Notification failed but form was submitted:', notifyError);
-      }
-
-      setLoading(false);
-      setSubmitted(true);
-
-    } catch (err) {
-      setError(err.message || 'حدث خطأ أثناء إرسال البيانات');
-      setLoading(false);
-      console.error('Error:', err);
-    }
-  };
+  } catch (err) {
+    setError(err.message || 'حدث خطأ أثناء إرسال البيانات');
+    setLoading(false);
+    console.error('Error:', err);
+  }
+};
 
   // إرسال الإشعارات
   const sendNotifications = async (dataToSend) => {
@@ -1289,3 +1278,4 @@ const { error: insertError } = await supabase
     </div>
   );
 }
+import { analyzeProjectWithAI } from './aiService';
