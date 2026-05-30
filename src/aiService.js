@@ -1,24 +1,20 @@
 import OpenAI from "openai";
 
-// إنشاء عميل OpenAI
 const openai = new OpenAI({
   apiKey: process.env.REACT_APP_OPENAI_API_KEY,
   dangerouslyAllowBrowser: true,
 });
 
-/**
- * تحليل البيانات بـ AI
- * @param {Object} formData - بيانات النموذج
- * @returns {String} - التقرير من AI
- */
 export async function analyzeProjectWithAI(formData) {
   try {
-    const prompt = `
-أنت مهندس استشاري متخصص في المشاريع التقنية.
-
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o-mini",
+      messages: [
+        {
+          role: "user",
+          content: `أنت مهندس استشاري متخصص في المشاريع التقنية.
 حلّل هذا المشروع وأعطني تقرير احترافي:
 
-**البيانات:**
 - اسم الشركة: ${formData.company_name}
 - نوع المشروع: ${formData.project_types}
 - الهدف: ${formData.project_goal}
@@ -29,22 +25,12 @@ export async function analyzeProjectWithAI(formData) {
 - مستوى الأمان: ${formData.security_level}/5
 - عدد الموظفين: ${formData.employees}
 
-أعطني تقرير يتضمن:
+أعطني:
 1. ملخص المشروع
-2. المتطلبات التقنية الرئيسية
+2. المتطلبات التقنية
 3. المخاطر المحتملة
 4. درجة التعقيد (سهل/متوسط/صعب)
-5. التوصيات
-
-اكتب التقرير بصيغة احترافية وواضحة.
-`;
-
-    const response = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
-      messages: [
-        {
-          role: "user",
-          content: prompt,
+5. التوصيات`,
         },
       ],
       max_tokens: 2000,
@@ -53,7 +39,7 @@ export async function analyzeProjectWithAI(formData) {
 
     return response.choices[0].message.content;
   } catch (error) {
-    console.error("خطأ في التحليل:", error);
+    console.error("AI Error:", error);
     throw new Error("فشل التحليل: " + error.message);
   }
 }
