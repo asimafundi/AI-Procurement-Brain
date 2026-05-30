@@ -183,7 +183,7 @@ export default function SmartIntakeForm() {
       };
 
       // إرسال البيانات إلى Supabase
-      const { data, error: insertError } = await supabase
+      const { error: insertError } = await supabase
         .from('intakes')
         .insert([dataToSend])
         .select();
