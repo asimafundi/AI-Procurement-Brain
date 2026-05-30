@@ -1,46 +1,46 @@
-export async function analyzeProjectWithAI(
-  formData
-) {
+const API_URL = "http://localhost:3004/api/analyze-project";
+
+/**
+ * إرسال بيانات المشروع إلى الـ Backend
+ */
+export const analyzeProjectWithAI = async (data) => {
   try {
+    const response = await fetch(API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
 
-    const response = await fetch(
-      "/api/analyze-project",
-      {
-        method: "POST",
-
-        headers: {
-          "Content-Type":
-            "application/json",
-        },
-
-        body: JSON.stringify({
-          formData,
-        }),
-      }
-    );
-
-    const data =
-      await response.json();
-
+    // 🚨 إذا السيرفر رجع خطأ (404 / 500)
     if (!response.ok) {
+      const errorText = await response.text();
+      console.error("Server Error Response:", errorText);
+
       throw new Error(
-        data.error ||
-        "فشل التحليل"
+        `فشل الاتصال بالسيرفر (HTTP ${response.status})`
       );
     }
 
-    return data.analysis;
+    // 📦 نحاول قراءة الرد كـ JSON
+    const text = await response.text();
+
+    try {
+      return JSON.parse(text);
+    } catch (err) {
+      console.error("❌ الرد ليس JSON:", text);
+
+      throw new Error(
+        "السيرفر لم يرجع بيانات صحيحة (JSON غير صالح)"
+      );
+    }
 
   } catch (error) {
-
-    console.error(
-      "AI Error:",
-      error
-    );
+    console.error("AI Service Error:", error);
 
     throw new Error(
-      "فشل التحليل: " +
-      error.message
+      error.message || "حدث خطأ أثناء تحليل المشروع"
     );
   }
-}
+};
