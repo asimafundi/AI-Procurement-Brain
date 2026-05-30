@@ -144,31 +144,32 @@ const handleSubmit = async (e) => {
 
   try {
     // تحضير البيانات
-    const dataToSend = {
-      company_name: formData.companyName,
-      contact_name: formData.contactName,
-      phone: formData.phone,
-      email: formData.email,
-      city: formData.city,
-      business_type: formData.businessType,
-      project_types: formData.projectTypes.join(', '),
-      project_status: formData.projectStatus,
-      project_goal: formData.projectGoal,
-      deadline: formData.deadline,
-      area: parseInt(formData.area),
-      floors: formData.floors,
-      building_status: formData.buildingStatus,
-      ceiling_type: formData.ceilingType,
-      ceiling_height: formData.ceilingHeight,
-      drilling_restrictions: formData.drillingRestrictions,
-      server_room: formData.serverRoom,
-      employees: parseInt(formData.employees),
-      security_level: parseInt(formData.securityLevel),
-      google_maps_link: formData.googleMapsLink,
-      budget: formData.budget,
-      site_survey_required: needsSiteSurvey(),
-      status: 'pending'
-    };
+const dataToSend = {
+  company_name: formData.companyName,
+  contact_name: formData.contactName,
+  phone: formData.phone,
+  email: formData.email,
+  city: formData.city,
+  business_type: formData.businessType,
+  project_types: formData.projectTypes.join(', '),
+  project_status: formData.projectStatus,
+  project_goal: formData.projectGoal,
+  deadline: formData.deadline,
+  area: parseInt(formData.area),
+  floors: formData.floors,
+  building_status: formData.buildingStatus,
+  ceiling_type: formData.ceilingType,
+  ceiling_height: formData.ceilingHeight,
+  drilling_restrictions: formData.drillingRestrictions,
+  server_room: formData.serverRoom,
+  employees: parseInt(formData.employees),
+  security_level: parseInt(formData.securityLevel),
+  google_maps_link: formData.googleMapsLink,
+  budget: formData.budget,
+  site_survey_required: needsSiteSurvey(),
+  status: 'pending',
+  notes: ''
+};
 
     // 1️⃣ حفظ البيانات في Supabase
     const { data, error: insertError } = await supabase
