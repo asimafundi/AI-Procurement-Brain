@@ -360,143 +360,114 @@ const handleSubmit = async (e) => {
 
   // Submitted Screen
   if (submitted) {
-    return (
-      <div style={{
-        minHeight: '100vh',
-        background: 'linear-gradient(135deg, #E6F1FB 0%, #F0F7FF 100%)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '20px'
-      }}>
-        <div style={{
-          maxWidth: '600px',
-          background: '#fff',
-          borderRadius: '12px',
-          padding: '48px 32px',
-          textAlign: 'center',
-          border: '2px solid #85B7EB',
-          animation: 'slideUp 0.5s ease-out'
-        }}>
-          <div style={{
-            fontSize: '72px',
-            marginBottom: '24px'
-          }}>
-          if (submitted) {
   return (
-    <div style={{...}}>
-      
-      {/* التقرير الذكي */}
-      {formData.aiReport && (
-        <div style={{
-          background: '#EAF3DE',
-          borderRadius: '12px',
-          padding: '20px',
-          marginBottom: '20px',
-          border: '1px solid #97C459',
-          maxHeight: '400px',
-          overflowY: 'auto',
-          textAlign: 'right'
-        }}>
-          <h3 style={{color: '#27500A', marginBottom: '12px'}}>
-            📊 تقرير المستشار الذكي
-          </h3>
-          <div style={{
-            fontSize: '14px',
-            color: '#27500A',
-            lineHeight: '1.8',
-            whiteSpace: 'pre-wrap'
-          }}>
-            {formData.aiReport}
-          </div>
-        </div>
-      
-            ✅
-          </div>
-          
-          <h2 style={{
-            fontSize: '28px',
-            fontWeight: '600',
-            color: '#042C53',
-            marginBottom: '16px'
-          }}>
-            تم استلام طلبكم بنجاح!
-          </h2>
-
-          <p style={{
-            fontSize: '16px',
-            color: '#888780',
-            marginBottom: '32px',
-            lineHeight: '1.8'
-          }}>
-            شكراً لكم على الثقة. سيتم تحليل المشروع بعناية عالية وإرسال التقرير الكامل خلال 24–48 ساعة.
-          </p>
-
+    <div style={{
+      minHeight: '100vh',
+      background: 'linear-gradient(135deg, #E6F1FB 0%, #F0F7FF 100%)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: '20px'
+    }}>
+      <div style={{
+        maxWidth: '600px',
+        background: '#fff',
+        borderRadius: '12px',
+        padding: '48px 32px',
+        textAlign: 'center',
+        border: '2px solid #85B7EB',
+        animation: 'slideUp 0.5s ease-out'
+      }}>
+        
+        {/* التقرير الذكي */}
+        {formData.aiReport && (
           <div style={{
             background: '#EAF3DE',
-            borderRadius: '8px',
+            borderRadius: '12px',
             padding: '20px',
-            marginBottom: '24px',
-            border: '0.5px solid #97C459'
+            marginBottom: '20px',
+            border: '1px solid #97C459',
+            maxHeight: '400px',
+            overflowY: 'auto',
+            textAlign: 'right'
           }}>
-            <h3 style={{
-              fontSize: '14px',
-              fontWeight: '600',
-              color: '#27500A',
-              marginBottom: '12px'
-            }}>
-              ستتلقى:
+            <h3 style={{color: '#27500A', marginBottom: '12px'}}>
+              📊 تقرير المستشار الذكي
             </h3>
             <div style={{
-              fontSize: '13px',
-              color: '#3B6D11',
-              lineHeight: '1.8'
+              fontSize: '14px',
+              color: '#27500A',
+              lineHeight: '1.8',
+              whiteSpace: 'pre-wrap'
             }}>
-              ✅ تقييم أولي شامل<br/>
-              ✅ Scope مبدئي للمشروع<br/>
-              ✅ تقدير تكلفة أولي<br/>
-              ✅ تحليل المخاطر المحتملة<br/>
-              ✅ توصية بشأن الحاجة لموقع سيرفي
+              {formData.aiReport}
             </div>
           </div>
+        )}
 
-          {needsSiteSurvey() && (
-            <div style={{
-              background: '#FAEEDA',
-              borderRadius: '8px',
-              padding: '16px',
-              marginBottom: '24px',
-              border: '0.5px solid #EF9F27'
-            }}>
-              <p style={{
-                fontSize: '13px',
-                color: '#854F0B',
-                margin: '0'
-              }}>
-                ⚠️ بناءً على البيانات المدخلة، قد يحتاج مشروعك إلى موقع سيرفي شامل. سيتم التأكيد على ذلك في التقرير.
-              </p>
-            </div>
-          )}
+        {/* رسالة الشكر */}
+        <div style={{fontSize: '72px', marginBottom: '24px'}}>
+          ✅
+        </div>
+        
+        <h2 style={{
+          fontSize: '28px',
+          fontWeight: '600',
+          color: '#042C53',
+          marginBottom: '16px'
+        }}>
+          تم استلام طلبكم بنجاح!
+        </h2>
 
-          <p style={{
-            fontSize: '13px',
-            color: '#5F5E5A',
-            marginBottom: '0'
+        <p style={{
+          fontSize: '16px',
+          color: '#888780',
+          marginBottom: '32px',
+          lineHeight: '1.8'
+        }}>
+          شكراً لكم على الثقة. سيتم تحليل المشروع بعناية عالية وإرسال التقرير الكامل خلال 24–48 ساعة.
+        </p>
+
+        <div style={{
+          background: '#EAF3DE',
+          borderRadius: '8px',
+          padding: '20px',
+          marginBottom: '24px',
+          border: '0.5px solid #97C459'
+        }}>
+          <h3 style={{
+            fontSize: '14px',
+            fontWeight: '600',
+            color: '#27500A',
+            marginBottom: '12px'
           }}>
-            سيتم الاتصال بكم على الرقم: <strong>{formData.phone}</strong><br/>
-            أو عبر البريد: <strong>{formData.email}</strong>
-          </p>
+            ستتلقى:
+          </h3>
+          <div style={{
+            fontSize: '13px',
+            color: '#3B6D11',
+            lineHeight: '1.8'
+          }}>
+            ✅ تقييم أولي شامل<br/>
+            ✅ Scope مبدئي للمشروع<br/>
+            ✅ تقدير تكلفة أولي<br/>
+            ✅ تحليل المخاطر المحتملة<br/>
+            ✅ توصية بشأن الحاجة لموقع سيرفي
+          </div>
         </div>
 
-        <style>{`
-          @keyframes slideUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-          }
-        `}</style>
+        <p style={{
+          fontSize: '13px',
+          color: '#5F5E5A',
+          marginBottom: '0'
+        }}>
+          سيتم الاتصال بكم على الرقم: <strong>{formData.phone}</strong><br/>
+          أو عبر البريد: <strong>{formData.email}</strong>
+        </p>
       </div>
-    );
-  }
+    </div>
+  );
+}
 
   // Main Form Steps
   return (
