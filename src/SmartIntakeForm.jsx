@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { supabase } from './supabaseClient';
+import { analyzeProjectWithAI } from './aiService';
 
 export default function SmartIntakeForm() {
   const [step, setStep] = useState(0);
@@ -1278,4 +1279,3 @@ const handleSubmit = async (e) => {
     </div>
   );
 }
-import { analyzeProjectWithAI } from './aiService';
