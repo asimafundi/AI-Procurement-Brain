@@ -382,6 +382,35 @@ const handleSubmit = async (e) => {
             fontSize: '72px',
             marginBottom: '24px'
           }}>
+          if (submitted) {
+  return (
+    <div style={{...}}>
+      
+      {/* التقرير الذكي */}
+      {formData.aiReport && (
+        <div style={{
+          background: '#EAF3DE',
+          borderRadius: '12px',
+          padding: '20px',
+          marginBottom: '20px',
+          border: '1px solid #97C459',
+          maxHeight: '400px',
+          overflowY: 'auto',
+          textAlign: 'right'
+        }}>
+          <h3 style={{color: '#27500A', marginBottom: '12px'}}>
+            📊 تقرير المستشار الذكي
+          </h3>
+          <div style={{
+            fontSize: '14px',
+            color: '#27500A',
+            lineHeight: '1.8',
+            whiteSpace: 'pre-wrap'
+          }}>
+            {formData.aiReport}
+          </div>
+        </div>
+      
             ✅
           </div>
           
