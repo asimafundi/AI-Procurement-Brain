@@ -1,46 +1,40 @@
-const API_URL = "http://localhost:3004/api/analyze-project";
+import OpenAI from "openai";
 
-/**
- * إرسال بيانات المشروع إلى الـ Backend
- */
-export const analyzeProjectWithAI = async (data) => {
-  try {
-    const response = await fetch(API_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
+const openai = new OpenAI({
+  apiKey: process.env.REACT_APP_OPENAI_API_KEY,
+  dangerouslyAllowBrowser: true,
+});
+
+export async function analyzeProjectWithAI(formData) {
+  const response = await openai.chat.completions.create({
+    model: "gpt-4o-mini",
+    messages: [
+      {
+        role: "user",
+        content: `أنت مهندس استشاري متخصص في المشاريع التقنية.
+حلّل هذا المشروع وأعطني تقرير احترافي:
+
+- اسم الشركة: ${formData.company_name}
+- نوع المشروع: ${formData.project_types}
+- الهدف: ${formData.project_goal}
+- المساحة: ${formData.area} م²
+- الطوابق: ${formData.floors}
+- حالة المبنى: ${formData.building_status}
+- ارتفاع السقف: ${formData.ceiling_height}
+- مستوى الأمان: ${formData.security_level}/5
+- عدد الموظفين: ${formData.employees}
+
+أعطني:
+1. ملخص المشروع
+2. المتطلبات التقنية
+3. المخاطر المحتملة
+4. درجة التعقيد
+5. التوصيات`,
       },
-      body: JSON.stringify(data),
-    });
+    ],
+    max_tokens: 2000,
+    temperature: 0.7,
+  });
 
-    // 🚨 إذا السيرفر رجع خطأ (404 / 500)
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error("Server Error Response:", errorText);
-
-      throw new Error(
-        `فشل الاتصال بالسيرفر (HTTP ${response.status})`
-      );
-    }
-
-    // 📦 نحاول قراءة الرد كـ JSON
-    const text = await response.text();
-
-    try {
-      return JSON.parse(text);
-    } catch (err) {
-      console.error("❌ الرد ليس JSON:", text);
-
-      throw new Error(
-        "السيرفر لم يرجع بيانات صحيحة (JSON غير صالح)"
-      );
-    }
-
-  } catch (error) {
-    console.error("AI Service Error:", error);
-
-    throw new Error(
-      error.message || "حدث خطأ أثناء تحليل المشروع"
-    );
-  }
-};
+  return response.choices[0].message.content;
+}

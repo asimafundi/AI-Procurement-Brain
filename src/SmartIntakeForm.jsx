@@ -83,7 +83,7 @@ const SmartIntakeForm = () => {
       try {
         aiReport = await analyzeProjectWithAI(dataToSend);
         if (data && data[0]) {
-          await supabase.from('intakes').update({ ai_scope: aiReport }).eq('id', data[0].id);
+await supabase.from('intakes').update({ ai_analysis: aiReport }).eq('id', data[0].id);
         }
       } catch (aiErr) {
         console.warn('AI failed:', aiErr);
