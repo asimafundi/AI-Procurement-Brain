@@ -82,18 +82,20 @@ const SmartIntakeForm = () => {
       let aiReport = '';
       try {
         aiReport = await analyzeProjectWithAI(dataToSend);
+        console.log('AI Report:', aiReport);
         if (data && data[0]) {
-await supabase.from('intakes').update({ ai_analysis: aiReport }).eq('id', data[0].id);
+          await supabase.from('intakes').update({ ai_analysis: aiReport }).eq('id', data[0].id);
         }
       } catch (aiErr) {
-        console.warn('AI failed:', aiErr);
-        aiReport = '\u062a\u0639\u0630\u0631 \u0625\u0646\u0634\u0627\u0621 \u0627\u0644\u062a\u0642\u0631\u064a\u0631 \u0627\u0644\u062a\u0644\u0642\u0627\u0626\u064a. \u0633\u064a\u062a\u0645 \u0627\u0644\u062a\u062d\u0644\u064a\u0644 \u064a\u062f\u0648\u064a\u0627\u064b.';
+        console.log('AI Report failed:', aiErr);
+        aiReport = 'تعذر إنشاء التقرير التلقائي. سيتم التحليل يدوياً.';
       }
 
-      setFormData(prev => ({ ...prev, aiReport }));
+      console.log('Setting aiReport to state:', aiReport);
+      setFormData(prev => ({ ...prev, aiReport: aiReport }));
       setSubmitted(true);
     } catch (err) {
-      setError(err.message || '\u062d\u062f\u062b \u062e\u0637\u0623');
+      setError(err.message || 'حدث خطأ');
       console.error('Error:', err);
     } finally {
       setLoading(false);
